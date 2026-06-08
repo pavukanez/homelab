@@ -22,22 +22,17 @@ spec:
             - name: PORT
               value: "45876"
             - name: KEY
-              value: "REPLACE_WITH_ACTUAL_KEY_FROM_HUB_UI"
+              value: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFvyY4SMBfGB3AkfKDAhvOtG+g8WsJ/uPn81My+3S7qX"
+            - name: HUB_URL
+              value: "http://192.168.1.89:30090"
           ports:
             - containerPort: 45876
               hostPort: 45876
           volumeMounts:
-            - name: containerd-socket
-              mountPath: /var/run/containerd.sock
-              readOnly: true
             - name: host-root
               mountPath: /extra-filesystems/root
               readOnly: true
       volumes:
-        - name: containerd-socket
-          hostPath:
-            path: /var/run/containerd.sock
-            type: Socket
         - name: host-root
           hostPath:
             path: /
