@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: beszel-agent
+  namespace: beszel
+  labels:
+    app: beszel-agent
+spec:
+  selector:
+    matchLabels:
+      app: beszel-agent
+  template:
+    metadata:
+      labels:
+        app: beszel-agent
+    spec:
+      hostNetwork: true
+      containers:
+        - name: agent
+          image: henrygd/beszel-agent:latest
+          env:
+            - name: PORT
+              value: "45876"
+            - name: KEY
+              value: "REPLACE_WITH_ACTUAL_KEY_FROM_HUB_UI"
+          ports:
+            - containerPort: 45876
+              hostPort: 45876
+          volumeMounts:
+            - name: docker-socket
+              mountPath: /var/run/docker.sock
+              readOnly: true
+            - name: host-root
+              mountPath: /extra-filesystems/root
+              readOnly: true
+      volumes:
+        - name: docker-socket
+          hostPath:
+            path: /var/run/docker.sock
+            type: Socket
+        - name: host-root
+          hostPath:
+            path: /
+      tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+          operator: Exists
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/control-plane
+          operator: Exists
+  updateStrategy:
+    type: RollingUpdate
