@@ -1,13 +1,4 @@
-apiVersion: source.toolkit.fluxcd.io/v1beta2
-kind: HelmRepository
-metadata:
-  name: netdata
-  namespace: flux-system
-spec:
-  interval: 1h
-  url: https://netdata.github.io/helmchart/
----
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: netdata
@@ -17,13 +8,12 @@ spec:
   chart:
     spec:
       chart: netdata
-      version: "4.x.x" # Use latest stable version
+      version: "4.x.x"
       sourceRef:
         kind: HelmRepository
         name: netdata
         namespace: flux-system
   values:
     parent:
-      claimToken: "YOUR_CLAIM_TOKEN" # Optional: get from netdata.cloud
       database:
         storage: 2048
