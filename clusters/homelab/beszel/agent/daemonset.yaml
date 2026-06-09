@@ -18,11 +18,14 @@ spec:
       containers:
       - name: agent
         image: henrygd/beszel-agent:latest
+        args:
+        - -key
+        - "$(KEY)"
         env:
-        - name: TOKEN
-          value: "8267f84f-9c64-4a11-9d73-0411d4b85ac3"
-        - name: HUB_URL
-          value: "http://beszel-hub.beszel.svc.cluster.local:8090"
+        - name: KEY
+          value: "PLACEHOLDER_KEY_REPLACE_ME"
+        - name: PORT
+          value: "45876"
         ports:
         - containerPort: 45876
           hostPort: 45876
@@ -41,3 +44,4 @@ spec:
       - effect: NoSchedule
         key: node-role.kubernetes.io/control-plane
         operator: Exists
+      - operator: Exists  # Allow running on all nodes
