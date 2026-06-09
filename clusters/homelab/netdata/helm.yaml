@@ -26,3 +26,5 @@ spec:
     parent:
       database:
         storage: 2048
+      service:
+        type: LoadBalancer
