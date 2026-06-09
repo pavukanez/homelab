@@ -43,6 +43,3 @@ spec:
       - name: sys
         hostPath:
           path: /sys
-      - name: config
-        configMap:
-          name: netdata-config   # optional
