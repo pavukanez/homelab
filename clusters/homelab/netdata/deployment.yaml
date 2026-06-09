@@ -34,6 +34,8 @@ spec:
         - name: sys
           mountPath: /host/sys
           readOnly: true
+        - name: netdata-db
+          mountPath: /var/lib/netdata
       volumes:
       - name: proc
         hostPath:
@@ -41,3 +43,6 @@ spec:
       - name: sys
         hostPath:
           path: /sys
+      - name: netdata-db
+        persistentVolumeClaim:
+          claimName: netdata-db
