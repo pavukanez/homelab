@@ -22,9 +22,9 @@ spec:
         - containerPort: 19999
         env:
         - name: NETDATA_CLAIM_TOKEN
-          value: "XWD-q-Q0_vEcx7nI55v7gE00ygB_bzbqeqUMKkuftzBhBegbmW_DWUAsKPj9o9s1C0AAxtZqVBehJiWmae2DakuJveOu1KrOZANRR_RdWB9z-3MkJiClyLEXEYZqMWUvXGwclgI"   # Optional: set if you use Netdata Cloud
+          value: ""   # Optional: set if you use Netdata Cloud
         - name: NETDATA_CLAIM_ROOMS
-          value: "e1978bd8-2a45-4a2e-9e2c-b1547016ad73"
+          value: ""
         securityContext:
           privileged: true   # Required for host system metrics
         volumeMounts:
