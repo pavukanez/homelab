@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: netdata
+  namespace: netdata
+spec:
+  selector:
+    app: netdata
+  ports:
+    - port: 19999
+      targetPort: 19999
+  type: NodePort

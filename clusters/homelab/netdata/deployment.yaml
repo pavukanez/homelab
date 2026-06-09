@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netdata
+  namespace: netdata
+  labels:
+    app: netdata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netdata
+  template:
+    metadata:
+      labels:
+        app: netdata
+    spec:
+      containers:
+      - name: netdata
+        image: netdata/netdata:latest
+        ports:
+        - containerPort: 19999
+        env:
+        - name: NETDATA_CLAIM_TOKEN
+          value: ""   # Optional: set if you use Netdata Cloud
+        - name: NETDATA_CLAIM_ROOMS
+          value: ""
+        securityContext:
+          privileged: true   # Required for host system metrics
+        volumeMounts:
+        - name: proc
+          mountPath: /host/proc
+          readOnly: true
+        - name: sys
+          mountPath: /host/sys
+          readOnly: true
+        - name: config
+          mountPath: /etc/netdata
+      volumes:
+      - name: proc
+        hostPath:
+          path: /proc
+      - name: sys
+        hostPath:
+          path: /sys
+      - name: config
+        configMap:
+          name: netdata-config   # optional
