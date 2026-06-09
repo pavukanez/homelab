@@ -34,8 +34,6 @@ spec:
         - name: sys
           mountPath: /host/sys
           readOnly: true
-        - name: config
-          mountPath: /etc/netdata
       volumes:
       - name: proc
         hostPath:
