@@ -5,6 +5,8 @@ namespace: beszel
 
 resources:
   - namespace.yaml
-  - hub/
+  - pvc.yaml
+  - deployment.yaml
+  - service.yaml
   - nodeport.yaml
   - agent/
