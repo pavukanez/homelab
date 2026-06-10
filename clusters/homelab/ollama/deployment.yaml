@@ -15,41 +15,6 @@ spec:
       labels:
         app: ollama
     spec:
-      initContainers:
-        - name: model-puller
-          image: ollama/ollama:latest
-          command:
-            - /bin/sh
-            - -c
-            - |
-              echo "Starting Ollama server for model pull..."
-              ollama serve &
-              SERVER_PID=$!
-              
-              # Wait for server to be ready
-              echo "Waiting for Ollama server to be ready..."
-              until ollama list >/dev/null 2>&1; do
-                sleep 2
-              done
-              
-              echo "Ollama server ready. Pulling qwen2.5:3b model..."
-              ollama pull qwen2.5:3b
-              echo "Successfully pulled qwen2.5:3b model!"
-              
-              echo "Model pull complete. Shutting down temporary server..."
-              kill $SERVER_PID
-              wait $SERVER_PID 2>/dev/null || true
-              echo "Init container finished successfully."
-          volumeMounts:
-            - name: models
-              mountPath: /root/.ollama
-          resources:
-            requests:
-              memory: "2Gi"
-              cpu: "1"
-            limits:
-              memory: "4Gi"
-              cpu: "2"
       containers:
         - name: ollama
           image: ollama/ollama:latest
@@ -76,16 +41,14 @@ spec:
             httpGet:
               path: /api/tags
               port: 11434
-            initialDelaySeconds: 60
+            initialDelaySeconds: 30
             periodSeconds: 10
-            failureThreshold: 5
           livenessProbe:
             httpGet:
               path: /api/tags
               port: 11434
-            initialDelaySeconds: 120
+            initialDelaySeconds: 60
             periodSeconds: 30
-            failureThreshold: 3
       volumes:
         - name: models
           persistentVolumeClaim:
